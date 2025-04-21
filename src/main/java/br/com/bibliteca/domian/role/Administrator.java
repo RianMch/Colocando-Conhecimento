@@ -10,9 +10,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity(name="Admin")
-@Table(name="admins")
-public class Admin extends User{
+public class Administrator extends User{
+
 
 }
