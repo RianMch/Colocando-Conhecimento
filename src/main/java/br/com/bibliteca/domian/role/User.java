@@ -1,6 +1,5 @@
-package br.com.bibliteca.domian;
+package br.com.bibliteca.domian.role;
 
-import br.com.bibliteca.domian.role.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Max;

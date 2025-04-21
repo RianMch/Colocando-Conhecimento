@@ -1,4 +1,4 @@
-package br.com.bibliteca.domian;
+package br.com.bibliteca.domian.role;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
