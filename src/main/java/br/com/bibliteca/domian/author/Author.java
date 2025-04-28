@@ -26,14 +26,23 @@ public class Author {
     @NotBlank (message = "The nationality of the author is mandatory ")
     private String nationality;
     private LocalDate DateOfBirth;
+    private boolean ativo;
 
     @OneToMany(mappedBy = "author")
     private List<Book> bookList;
 
     public Author(AuthorDto authorDto){
+        this.ativo=true;
         this.name=authorDto.name();
         this.nationality= authorDto.nationality();
         this.DateOfBirth= authorDto.DateOfBirth();
+    }
+
+    public void delete(){
+        this.ativo=false;
+    }
+    public void update(){
+
     }
 
 

@@ -9,6 +9,8 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -29,7 +31,18 @@ public class AuthorController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<AuthorListinDto>list>(){
-
+    public ResponseEntity<Page<AuthorListinDto>>list(@PageableDefault(size = 10,sort ={"id"},page = 0)
+    Pageable pageable){
+        var author=repositoryAuthor.findByAtivoTrue(pageable).map(AuthorListinDto::new);
+        return ResponseEntity.ok(author);
     }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity delete(@PathVariable Long id){
+        var author=repositoryAuthor.getReferenceById(id);
+        author.delete();
+        return ResponseEntity.noContent().build();
+    }
+
 }
