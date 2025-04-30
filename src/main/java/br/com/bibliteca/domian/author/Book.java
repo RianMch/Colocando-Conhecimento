@@ -1,6 +1,9 @@
 package br.com.bibliteca.domian.author;
 
+import br.com.bibliteca.domian.dto.book.BookDto;
+import br.com.bibliteca.domian.dto.book.UpdateBookDto;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -29,9 +32,50 @@ public class Book {
     private int quantityTotal;
     @NotNull
     private int quantityAvailable;
+    @Enumerated(EnumType.STRING)
+    private Genre genre;
+
+    private boolean ativo;
 
 
     @ManyToOne
     @JoinColumn (name ="author_id")
     private Author author;
+
+    public Book(@Valid BookDto bookDto) {
+        this.ativo=true;
+        this.title=bookDto.title();
+        this.isbn=bookDto.isbn();
+        this.quantityAvailable=getQuantityAvailable();
+        this.genre=bookDto.genre();
+        this.quantityTotal= bookDto.quantityTotal();
+
+    }
+
+    public void delete() {
+        this.ativo = false;
+    }
+
+    public void verificacao(){
+    }
+
+    public void update(@Valid UpdateBookDto updateBookDtobook){
+        if(updateBookDtobook.title()!=null){
+            this.title= updateBookDtobook.title();
+        }
+        if(updateBookDtobook.quantityAvailable()>0){
+            this.quantityAvailable=updateBookDtobook.quantityAvailable();
+        }
+        if(updateBookDtobook.quantityTotal()>0){
+            this.quantityTotal=updateBookDtobook.quantityTotal();
+        }
+        if(updateBookDtobook.genre()!=null){
+            this.genre=updateBookDtobook.genre();
+        }
+        if(updateBookDtobook.isbn()!=null){
+            this.isbn=updateBookDtobook.isbn();
+        }
+    }
+
+
 }

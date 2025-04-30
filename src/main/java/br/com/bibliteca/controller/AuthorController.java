@@ -2,9 +2,11 @@ package br.com.bibliteca.controller;
 
 import br.com.bibliteca.domian.author.Author;
 import br.com.bibliteca.domian.dto.author.AuthorDto;
+import br.com.bibliteca.domian.dto.user.UserDetailsDTO;
 import br.com.bibliteca.domian.repository.RepositoryAuthor;
 import br.com.bibliteca.domian.dto.author.AuthorDetailsDTO;
 import br.com.bibliteca.domian.dto.author.AuthorListinDto;
+import br.com.bibliteca.domian.dto.author.UpdateAuthorDto;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,5 +46,15 @@ public class AuthorController {
         author.delete();
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping
+    @Transactional
+    public ResponseEntity update(@RequestBody @Valid UpdateAuthorDto updateAuthorDto){
+        var user=repositoryAuthor.getReferenceById(updateAuthorDto.id());
+        user.update(updateAuthorDto);
+        return ResponseEntity.ok(new AuthorDetailsDTO(user));
+    }
+
+
 
 }
