@@ -36,7 +36,7 @@ public class BookController {
         return ResponseEntity.created(uri).body(new BookDetailsDTO(book));
     }
 @Transactional
-@PutMapping
+@PutMapping()
     public ResponseEntity Update(@RequestBody @Valid UpdateBookDto updateBookDto){
         var book = repositoryBook.getReferenceById(updateBookDto.id());
         book.update(updateBookDto);
@@ -46,6 +46,14 @@ public class BookController {
     public ResponseEntity<Page<BookListinDto>> list(@PageableDefault(size = 10,page = 0,sort = {"id"}) Pageable pageable){
     var page =repositoryBook.findByAtivoTrue(pageable).map(BookListinDto::new );
     return ResponseEntity.ok(page);
+    }
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        var book = repositoryBook.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Livro não encontrado"));
+        book.delete(); // Este método deve marcar o livro como inativo (soft delete)
+        return ResponseEntity.noContent().build(); // HTTP 204
     }
 
 }

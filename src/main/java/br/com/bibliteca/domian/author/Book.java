@@ -48,37 +48,47 @@ public class Book {
         this.ativo = true;
         this.title = bookDto.title();
         this.isbn = bookDto.isbn();
-        this.quantityAvailable = bookDto.quantityAvailable();
+        this.quantityTotal = validarQuantidade(bookDto.quantityTotal());
+        this.quantityAvailable = validarQuantidadeDisponivel(bookDto.quantityAvailable(), this.quantityTotal);
         this.genre = bookDto.genre();
-        this.quantityTotal = bookDto.quantityTotal();
         this.author = repositoryAuthor.getReferenceById(bookDto.authorID());
+    }
+
+    private int validarQuantidade(int quantidade) {
+        if (quantidade <= 0) throw new IllegalArgumentException("Quantidade deve ser maior que 0.");
+        return quantidade;
+    }
+
+    private int validarQuantidadeDisponivel(int disponivel, int total) {
+        if (disponivel < 0 || disponivel > total) {
+            throw new IllegalArgumentException("Quantidade disponível inválida.");
+        }
+        return disponivel;
+    }
+
+    public void update(@Valid UpdateBookDto updateBookDto) {
+        if (updateBookDto.title() != null) this.title = updateBookDto.title();
+        if (updateBookDto.quantityTotal() > 0) this.quantityTotal = updateBookDto.quantityTotal();
+        if (updateBookDto.quantityAvailable() >= 0 && updateBookDto.quantityAvailable() <= this.quantityTotal) {
+            this.quantityAvailable = updateBookDto.quantityAvailable();
+        }
+        if (updateBookDto.genre() != null) this.genre = updateBookDto.genre();
+        if (updateBookDto.isbn() != null) this.isbn = updateBookDto.isbn();
+    }
+
+    public void delete(){
+        this.ativo=false;
+    }
+
+    public void reduzirEstoque(){
+        if(this.quantityTotal>0){
+            this.quantityTotal--;
+        }else{
+            throw  new IllegalArgumentException("Não ha exemplares Disponíveis");
+        }
 
     }
 
-    public void delete() {
-        this.ativo = false;
-    }
-
-    public void verificacao() {
-    }
-
-    public void update(@Valid UpdateBookDto updateBookDtobook) {
-        if (updateBookDtobook.title() != null) {
-            this.title = updateBookDtobook.title();
-        }
-        if (updateBookDtobook.quantityAvailable() > 0) {
-            this.quantityAvailable = updateBookDtobook.quantityAvailable();
-        }
-        if (updateBookDtobook.quantityTotal() > 0) {
-            this.quantityTotal = updateBookDtobook.quantityTotal();
-        }
-        if (updateBookDtobook.genre() != null) {
-            this.genre = updateBookDtobook.genre();
-        }
-        if (updateBookDtobook.isbn() != null) {
-            this.isbn = updateBookDtobook.isbn();
-        }
-    }
 
 
 }
