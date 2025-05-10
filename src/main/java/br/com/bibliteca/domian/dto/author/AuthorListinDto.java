@@ -6,8 +6,8 @@ import br.com.bibliteca.domian.author.Book;
 import java.time.LocalDate;
 import java.util.List;
 
-public record AuthorListinDto(Long id, String name, String nationality, LocalDate DateOfBirth, List<Book>bookList) {
+public record AuthorListinDto(Long id, String name, String nationality, LocalDate DateOfBirth) {
     public AuthorListinDto(Author author){
-        this(author.getId(), author.getName(),author.getNationality(),author.getDateOfBirth(),author.getBookList());
+        this(author.getId(), author.getName(),author.getNationality(),author.getDateOfBirth());
     }
 }

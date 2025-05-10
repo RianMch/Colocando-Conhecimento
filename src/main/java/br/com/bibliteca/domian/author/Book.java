@@ -1,7 +1,9 @@
 package br.com.bibliteca.domian.author;
 
+import br.com.bibliteca.domian.dto.author.AuthorDto;
 import br.com.bibliteca.domian.dto.book.BookDto;
 import br.com.bibliteca.domian.dto.book.UpdateBookDto;
+import br.com.bibliteca.domian.repository.RepositoryAuthor;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -17,8 +19,8 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name="book")
-@Table(name="books")
+@Entity(name = "book")
+@Table(name = "books")
 
 public class Book {
     @Id
@@ -39,16 +41,17 @@ public class Book {
 
 
     @ManyToOne
-    @JoinColumn (name ="author_id")
+    @JoinColumn(name = "author_id")
     private Author author;
 
-    public Book(@Valid BookDto bookDto) {
-        this.ativo=true;
-        this.title=bookDto.title();
-        this.isbn=bookDto.isbn();
-        this.quantityAvailable=getQuantityAvailable();
-        this.genre=bookDto.genre();
-        this.quantityTotal= bookDto.quantityTotal();
+    public Book(@Valid BookDto bookDto, RepositoryAuthor repositoryAuthor) {
+        this.ativo = true;
+        this.title = bookDto.title();
+        this.isbn = bookDto.isbn();
+        this.quantityAvailable = bookDto.quantityAvailable();
+        this.genre = bookDto.genre();
+        this.quantityTotal = bookDto.quantityTotal();
+        this.author = repositoryAuthor.getReferenceById(bookDto.authorID());
 
     }
 
@@ -56,24 +59,24 @@ public class Book {
         this.ativo = false;
     }
 
-    public void verificacao(){
+    public void verificacao() {
     }
 
-    public void update(@Valid UpdateBookDto updateBookDtobook){
-        if(updateBookDtobook.title()!=null){
-            this.title= updateBookDtobook.title();
+    public void update(@Valid UpdateBookDto updateBookDtobook) {
+        if (updateBookDtobook.title() != null) {
+            this.title = updateBookDtobook.title();
         }
-        if(updateBookDtobook.quantityAvailable()>0){
-            this.quantityAvailable=updateBookDtobook.quantityAvailable();
+        if (updateBookDtobook.quantityAvailable() > 0) {
+            this.quantityAvailable = updateBookDtobook.quantityAvailable();
         }
-        if(updateBookDtobook.quantityTotal()>0){
-            this.quantityTotal=updateBookDtobook.quantityTotal();
+        if (updateBookDtobook.quantityTotal() > 0) {
+            this.quantityTotal = updateBookDtobook.quantityTotal();
         }
-        if(updateBookDtobook.genre()!=null){
-            this.genre=updateBookDtobook.genre();
+        if (updateBookDtobook.genre() != null) {
+            this.genre = updateBookDtobook.genre();
         }
-        if(updateBookDtobook.isbn()!=null){
-            this.isbn=updateBookDtobook.isbn();
+        if (updateBookDtobook.isbn() != null) {
+            this.isbn = updateBookDtobook.isbn();
         }
     }
 

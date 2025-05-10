@@ -10,5 +10,6 @@ public record UpdateBookDto(
                          @NotBlank String isbn,
                          @NotNull int quantityTotal,
                          @NotNull int quantityAvailable,
-                         @NotBlank Genre genre) {
+                         @NotBlank Genre genre
+                         ) {
 }

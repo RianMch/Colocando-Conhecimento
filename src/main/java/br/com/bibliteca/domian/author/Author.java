@@ -38,7 +38,7 @@ public class Author {
         this.ativo=true;
         this.name=authorDto.name();
         this.nationality= authorDto.nationality();
-        this.DateOfBirth= authorDto.DateOfBirth();
+        this.DateOfBirth= authorDto.dateOfBirth();
         this.genre=authorDto.genre();
     }
 
