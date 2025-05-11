@@ -4,7 +4,7 @@ import br.com.bibliteca.domian.dto.user.UserDetailsDTO;
 import br.com.bibliteca.domian.dto.user.UsersDto;
 import br.com.bibliteca.domian.dto.user.UsersListingDto;
 import br.com.bibliteca.domian.repository.RepositoryUser;
-import br.com.bibliteca.domian.role.User;
+import br.com.bibliteca.domian.role.UserBook;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
@@ -25,7 +25,7 @@ public class UserController {
     @Transactional
     @PostMapping
     public ResponseEntity cadastrarUser(@RequestBody @Valid UsersDto usersDto, UriComponentsBuilder uribuilder){
-        var user=new User(usersDto);
+        var user=new UserBook(usersDto);
         repositoryUser.save(user);
         var uri=uribuilder.path("/user/{id}").buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(uri).body(new UserDetailsDTO(user));

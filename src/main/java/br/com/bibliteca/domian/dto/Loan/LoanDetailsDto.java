@@ -14,10 +14,10 @@ public record LoanDetailsDto(
     public LoanDetailsDto(Loan loan) {
         this(
                 loan.getId(),
-                loan.getUser().,
+                loan.getUser().getName()                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ,
                 loan.getBook().getTitle(),
-                loan.getLoanDate(),
-                loan.getReturnDate()
+                loan.getDataEmprestimo(),
+                loan.getDataDevolucaoReal()
         );
 
     }

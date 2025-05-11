@@ -18,7 +18,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity (name="user_entity")
 @Table(name="users")
-public class User {
+public class UserBook {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
@@ -33,7 +33,7 @@ public class User {
 
     private boolean ativo;
 
-    public User(UsersDto dto){
+    public UserBook(UsersDto dto){
         this.ativo=true;
         this.name=dto.name();
         this.age=dto.age();
@@ -61,5 +61,11 @@ public class User {
         this.ativo=false;
     }
 
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

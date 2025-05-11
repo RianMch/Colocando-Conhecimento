@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Entity(name = "loan")
 @Table(name = "loans")
-public class Loan<User> {
+public class Loan {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +24,7 @@ public class Loan<User> {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id")
-    private User user;
+    private UserBook user;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "book_id")
@@ -36,30 +36,20 @@ public class Loan<User> {
 
     @Column(name = "ativo")
     private boolean ativo = true;
-
-    // Construtor para criação de um novo empréstimo
-    public Loan(User user, Book book) {
-        this.user = user;
+    public Loan(UserBook userBook, Book book) {
+        this.user = userBook;
         this.book = book;
         this.dataEmprestimo = LocalDate.now();
         this.dataDevolucaoPrevista = this.dataEmprestimo.plusDays(7); // exemplo: 7 dias para devolução
         this.ativo = true;
-        this.book.reduzirQuantidadeDisponivel(); // lógica no Book
+        this.book.reduzirEstoque(); // lógica no Book
     }
-
-    // Marcar empréstimo como finalizado
     public void finalizar() {
         this.ativo = false;
         this.dataDevolucaoReal = LocalDate.now();
-        this.book.aumentarQuantidadeDisponivel(); // lógica no Book
+        this.book.aumentarQuantidade(); // lógica no Book
     }
 
-    // Getters para campos customizados
-    public LocalDate getReturnDate() {
-        return dataDevolucaoPrevista;
-    }
 
-    public LocalDate getLoanDate() {
-        return dataEmprestimo;
-    }
+
 }

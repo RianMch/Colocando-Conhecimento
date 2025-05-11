@@ -88,6 +88,14 @@ public class Book {
         }
 
     }
+    public void aumentarQuantidade(){
+        if(this.quantityTotal>0){
+            this.quantityTotal++;
+        }else {
+            throw new IllegalArgumentException("Numero Negativo não permitido");
+        }
+    }
+
 
 
 
