@@ -32,7 +32,7 @@ public class LoanController {
 @PostMapping
     @Transactional
     public ResponseEntity realizarEmprestimo(@RequestBody @Valid LoanDto dto, UriComponentsBuilder builder){
-    var user = repositoryUser.findById(dto.userID()).orElseThrow(()-> new IllegalArgumentException("Usuário não Encontrado"));
+    var user = repositoryUser.findById(dto.userId()).orElseThrow(()-> new IllegalArgumentException("Usuário não Encontrado"));
     var book = repositoryBook.findById(dto.bookId()).orElseThrow(()->new IllegalArgumentException("Livro não Encontrado"));
 
     if(!book.isAtivo()|| book.getQuantityTotal()<1){
@@ -46,9 +46,18 @@ public class LoanController {
     return ResponseEntity.created(uri).body(new LoanDetailsDto(loan));
 }
 @GetMapping
-public ResponseEntity<Page<LoanListingDto>> list(@PageableDefault(size = 10,sort={"id"},page = 0), Pageable pageable){
+public ResponseEntity<Page<LoanListingDto>> list(@PageableDefault(size = 10,sort={"id"},page = 0) Pageable pageable){
     var page =repositoryLoan.findByAtivoTrue(pageable).map(LoanListingDto::new);
     return ResponseEntity.ok(page);
+}
+
+@DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity delete(@RequestBody Long id){
+    var loan=repositoryLoan.findById(id).orElseThrow(()-> new IllegalArgumentException("Emprestimo não encontrado."));
+    loan.delete();
+    return ResponseEntity.noContent().build();
+
 }
 
 }

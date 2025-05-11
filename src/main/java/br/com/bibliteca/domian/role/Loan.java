@@ -1,7 +1,6 @@
 package br.com.bibliteca.domian.role;
 
 import br.com.bibliteca.domian.author.Book;
-import br.com.bibliteca.domian.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -48,6 +47,10 @@ public class Loan {
         this.ativo = false;
         this.dataDevolucaoReal = LocalDate.now();
         this.book.aumentarQuantidade(); // lógica no Book
+    }
+
+    public void delete(){
+        this.ativo = false;
     }
 
 

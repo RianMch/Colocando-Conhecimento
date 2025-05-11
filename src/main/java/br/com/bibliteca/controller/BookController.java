@@ -52,8 +52,8 @@ public class BookController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         var book = repositoryBook.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Livro não encontrado"));
-        book.delete(); // Este método deve marcar o livro como inativo (soft delete)
-        return ResponseEntity.noContent().build(); // HTTP 204
+        book.delete();
+        return ResponseEntity.noContent().build();
     }
 
 }
